@@ -4,10 +4,17 @@ const readline = require('readline').createInterface({
     output: process.stdout
 })
 
-readline.question("Enter number: ", (numb,type) => {
 
-    console.log("Numb ==>",numb)
-    console.log("Type ==>",type)
+readline.question("Do you want a list (yes or no): ", bool => {
+    readline.question("Enter number: ", numb => {
 
-    readline.close();
+        // console.log("Numb ==>", numb)
+    
+        if (bool === "y" || bool === "yes") {
+            fibonacci.fib(numb,"list")
+        } else {
+            fibonacci.fib(numb)
+        }
+        readline.close();
+    });
 })
