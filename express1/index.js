@@ -31,10 +31,13 @@ app.use(cors())
 
 app.get('/', (req, res) => {
     res.status(200).json(todos)
+});
+
+app.get('/todos', (req, res) => {
     res.render('home.ejs', {
         data: todos
     });
-});
+})
 
 app.get('/:id', (req, res) => {
     const { id } = req.params;
