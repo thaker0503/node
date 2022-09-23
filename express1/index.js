@@ -7,8 +7,8 @@ var PORT = 3001;
 const { v4: uuidv4 } = require('uuid');
 var id = uuidv4();
 var todos = require('./db.json');
-const { resolveMx } = require('dns');
-const { resolveInclude } = require('ejs');
+// const { resolveMx } = require('dns');
+// const { resolveInclude } = require('ejs');
 console.log(todos)
 
 // app.use(express.static(path.join(__dirname, 'public')));
@@ -103,4 +103,4 @@ app.listen(PORT, function (err) {
     console.log("Server listening on PORT", PORT);
 });
 
-module.exports = app;
+// module.exports = app;
