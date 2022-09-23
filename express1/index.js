@@ -7,32 +7,38 @@ var PORT = 3001;
 const { v4: uuidv4 } = require('uuid');
 var id = uuidv4();
 var todos = require('./db.json');
+const { resolveMx } = require('dns');
+const { resolveInclude } = require('ejs');
 console.log(todos)
 
 // app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json({limit: '30mb', extended: true}))
-app.use(express.urlencoded({limit: '30mb', extended: true}))
+app.use(express.urlencoded({ limit: '30mb', extended: true }))
+app.set('view engine', 'ejs');
 
-var whitelist = ['http://localhost:5502']
-var corsOptions = {
-    origin: function (origin, callback) {
-        if (whitelist.indexOf(origin) !== -1) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    }
-}
+// var whitelist = ['http://localhost:5502']
+// var corsOptions = {
+//     origin: function (origin, callback) {
+//         if (whitelist.indexOf(origin) !== -1) {
+//             callback(null, true)
+//         } else {
+//             callback(new Error('Not allowed by CORS'))
+//         }
+//     }
+// }
 
 app.use(cors())
 
 app.get('/', (req, res) => {
-    res.status(200).json(todos);
+    res.status(200).json(todos)
+    res.render('home.ejs', {
+        data: todos
+    });
 });
 
 app.get('/:id', (req, res) => {
     const { id } = req.params;
-    var index = todos.findIndex(item => item.id == id);
+    let index = todos.findIndex(item => item.id == id);
     res.json(todos[index])
 });
 
@@ -47,7 +53,7 @@ app.post('/', (req, res) => {
             }
             console.log("Successfully Added")
         });
-        res.end();
+        res.status(201).json(todos);
     } catch (error) {
         console.log(error.message);
     }
@@ -55,6 +61,7 @@ app.post('/', (req, res) => {
 
 app.put('/:id', (req, res) => {
     const { id } = req.params;
+    let index = todos.findIndex(item => item.id == id);
     todos = todos.map(item => {
         if (item.id == id) {
             req.body['id'] = id
@@ -71,7 +78,7 @@ app.put('/:id', (req, res) => {
         }
         console.log("Successfully Added")
     });
-    res.end();
+    res.json(todos[index]);
 });
 
 app.delete('/:id', (req, res) => {

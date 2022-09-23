@@ -2,11 +2,68 @@
 <html>
 
 <head>
-    <title>express.static() Demo</title>
+    <title>Todos</title>
+    <style>
+        *{
+            box-sizing: border-box;
+        }
+        body{
+            background-color: #e9e9fc;
+        }
+        h1{
+            color: #1a1a1a;
+            text-align: center;
+        }
+        table{
+            width: 100%;
+        }
+        table,tr,td,th{
+            border: solid black;
+            border-collapse: collapse;
+        }
+        th,td{
+            width: 20%;
+            padding: 10px 20px;
+        }
+        th{
+            border: 1px solid white;
+            color: #e9e9fc;
+            background-color: #111111;
+        }
+        tr:nth-child(odd){
+            background-color: #1a1a1a;
+            color: #e9e9fc;
+        }
+    </style>
 </head>
 
 <body>
-    <%- include('../db.json') %>
+    <h1>To Do Data</h1>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Completed</th>
+        </tr>
+        <% for(var i=0; i < data.length; i++) { %>
+            <tr>
+                <td>
+                    <%= data[i].id %>
+                </td>
+                <td>
+                    <%= data[i].title %>
+                </td>
+                <td>
+                    <%= data[i].description %>
+                </td>
+                <td>
+                    <%= data[i].completed %>
+                </td>
+            </tr>
+            <% } %>
+    </table>
+    
 </body>
 
 </html>
