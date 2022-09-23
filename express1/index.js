@@ -16,36 +16,36 @@ app.use(express.json({limit: '30mb', extended: true}))
 app.use(express.urlencoded({ limit: '30mb', extended: true }))
 app.set('view engine', 'ejs');
 
-// var whitelist = ['http://localhost:5502']
-// var corsOptions = {
-//     origin: function (origin, callback) {
-//         if (whitelist.indexOf(origin) !== -1) {
-//             callback(null, true)
-//         } else {
-//             callback(new Error('Not allowed by CORS'))
-//         }
-//     }
-// }
+var whitelist = ['http://localhost:5500', 'http://127.0.0.1:5500']
+var corsOptions = {
+    origin: function (origin, callback) {
+        if (whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error('Not allowed by CORS'))
+        }
+    }
+}
 
-app.use(cors())
+app.use(cors(corsOptions))
 
-app.get('/', (req, res) => {
+app.get('/api/', (req, res) => {
     res.status(200).json(todos)
 });
 
-app.get('/todos', (req, res) => {
+app.get('/', (req, res) => {
     res.render('home.ejs', {
         data: todos
     });
 })
 
-app.get('/:id', (req, res) => {
+app.get('/api/:id', (req, res) => {
     const { id } = req.params;
     let index = todos.findIndex(item => item.id == id);
     res.json(todos[index])
 });
 
-app.post('/', (req, res) => {
+app.post('/api/', (req, res) => {
     try {
         req.body['id'] = id;
         todos.push(req.body)
@@ -62,7 +62,7 @@ app.post('/', (req, res) => {
     }
 });
 
-app.put('/:id', (req, res) => {
+app.put('/api/:id', (req, res) => {
     const { id } = req.params;
     let index = todos.findIndex(item => item.id == id);
     todos = todos.map(item => {
@@ -84,7 +84,7 @@ app.put('/:id', (req, res) => {
     res.json(todos[index]);
 });
 
-app.delete('/:id', (req, res) => {
+app.delete('/api/:id', (req, res) => {
     const { id } = req.params;
     var index = todos.findIndex(item => item.id == id);
     todos.splice(index, 1);
