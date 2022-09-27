@@ -16,7 +16,7 @@ app.use(express.json({limit: '30mb', extended: true}))
 app.use(express.urlencoded({ limit: '30mb', extended: true }))
 app.set('view engine', 'ejs');
 
-var whitelist = ['http://localhost:5500', 'http://127.0.0.1:5500']
+var whitelist = ['http://localhost:5500', 'http://127.0.0.1:5500', 'https://thaker0503.github.io/']
 var corsOptions = {
     origin: function (origin, callback) {
         if (whitelist.indexOf(origin) !== -1) {
@@ -27,7 +27,7 @@ var corsOptions = {
     }
 }
 
-app.use(cors(corsOptions))
+app.use(cors())
 
 app.get('/api/', (req, res) => {
     res.status(200).json(todos)
@@ -72,7 +72,6 @@ app.put('/api/:id', (req, res) => {
         } else {
             return item
         }
-
     });
     fs.writeFile('db.json', JSON.stringify(todos), { flag: 'w+' }, err => {
         if (err) {
@@ -95,7 +94,7 @@ app.delete('/api/:id', (req, res) => {
         }
         console.log("Successfully Added")
     });
-    res.end();
+    res.json(todos);
 });
 
 app.listen(PORT, function (err) {
